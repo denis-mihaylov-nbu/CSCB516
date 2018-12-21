@@ -1,5 +1,6 @@
 package com.nbu.scm.view;
 
+import com.nbu.scm.bean.Club;
 import com.nbu.scm.bean.User;
 
 import javafx.scene.Scene;
@@ -35,7 +36,7 @@ public class AdminPanel {
 		userManagementTab.setContent(userManagementGrid);
 		tabPane.getTabs().add(userManagementTab);
 		
-		
+
 		
 		Tab personalTab = new Tab("Personal information");
 		PersonalInfoPane personalGrid = new PersonalInfoPane(user);
@@ -44,8 +45,16 @@ public class AdminPanel {
 		
 		personalTab.setContent(personalGrid);
 		tabPane.getTabs().add(personalTab);
+		
+		Tab calendarTab = new Tab("Calendar");
+		CalendarPane calendarGrid = new CalendarPane(new Club());
+		
+		// TODO Calendar edit page
+		
+		calendarTab.setContent(calendarGrid);
+		tabPane.getTabs().add(calendarTab);
 
-		Scene scene = new Scene(tabPane, 800, 500);
+		Scene scene = new Scene(tabPane, 1000, 500);
 		stage.setScene(scene);
 		stage.show();
 	}

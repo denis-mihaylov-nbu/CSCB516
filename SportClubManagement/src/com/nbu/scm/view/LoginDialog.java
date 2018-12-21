@@ -23,14 +23,14 @@ import javafx.stage.Stage;
 
 public class LoginDialog {
 
-	TextField userTextField = new TextField();
+	TextField userTextField = new TextField("denis");
 	PasswordField pwBox = new PasswordField();
 	Stage stage = null;
 	
 	public void start(Stage s, String[] args) {
 		stage = s;
 		stage.setTitle("Login");
-
+		pwBox.setText("denis");
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 		grid.setHgap(10);
