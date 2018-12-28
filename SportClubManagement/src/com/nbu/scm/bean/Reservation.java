@@ -8,6 +8,10 @@ public class Reservation {
 	private Court court;
 	private String name;
 
+	public Reservation() {
+		super();
+	}
+
 	public Reservation(int id, Timestamp date, Club club, Court court, String name) {
 		super();
 		this.id = id;
@@ -31,6 +35,10 @@ public class Reservation {
 
 	public void setDate(Timestamp date) {
 		this.timestamp = date;
+	}
+	
+	public void setDate(java.sql.Timestamp timestamp) {
+		this.timestamp = new Timestamp(timestamp);
 	}
 
 	public Club getClub() {
@@ -67,8 +75,7 @@ public class Reservation {
 
 	@Override
 	public String toString() {
-		return "Reservation [id=" + id + ", date=" + timestamp.getTimestampAsString() + ", club=" + club + ", court="
-				+ court + ", name=" + name + "]";
+		return court + ", " + name;
 	}
 
 }

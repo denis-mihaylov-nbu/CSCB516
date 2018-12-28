@@ -7,6 +7,8 @@ import java.sql.SQLException;
 
 import com.nbu.scm.bean.Club;
 import com.nbu.scm.bean.ClubType;
+import com.nbu.scm.bean.Court;
+import com.nbu.scm.bean.CourtType;
 
 public class ClubModel extends Base {
 
@@ -14,14 +16,19 @@ public class ClubModel extends Base {
 	private static final String COLUMN_NAME = "CLUB.NAME";
 	private static final String COLUMN_ADDRESS = "CLUB.ADDRESS";
 	
-	private static final String GET_USER_BY_USERNAME_AND_PASSWORD = "SELECT * FROM CLUB LEFT JOIN CLUB_TYPE ON CLUB.TYPE = CLUB_TYPE.ID WHERE ID=?";
-
+	private static final String GET_USER_BY_USERNAME_AND_PASSWORD = 
+			"SELECT * FROM CLUB LEFT JOIN CLUB_TYPE ON CLUB.TYPE = CLUB_TYPE.ID WHERE ID=?";
+	
 	public static Club fill(Club club, ResultSet rs) throws SQLException {
-		club = new Club();
+		if (club == null) {
+			club = new Club();
+		}
 		club.setId(rs.getInt(COLUMN_ID));
 		club.setName(rs.getString(COLUMN_NAME));
 		club.setAddress(rs.getString(COLUMN_ADDRESS));
 		club.setType(ClubTypeModel.fill(new ClubType(), rs));
+		club.addCourt(new Court(rs.getInt(CourtModel.COLUMN_ID), rs.getInt(CourtModel.COLUMN_NUMBER),
+				CourtTypeModel.fill(new CourtType(), rs)));
 		return club;
 	}
 

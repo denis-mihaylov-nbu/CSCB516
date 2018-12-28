@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.nbu.scm.bean.Club;
 import com.nbu.scm.bean.User;
 
 public class UserModel extends Base {
@@ -19,15 +18,19 @@ public class UserModel extends Base {
 	private static final String GET_USER_BY_USERNAME_AND_PASSWORD = "SELECT * FROM USER"
 			+ " LEFT JOIN CLUB ON USER.CLUBID = CLUB.ID"
 			+ " LEFT JOIN CLUB_TYPE ON CLUB.TYPE = CLUB_TYPE.ID"
+			+ " LEFT JOIN COURT ON CLUB.ID = COURT.CLUB_TYPE_ID"
+			+ " LEFT JOIN COURT_TYPE ON COURT.COURT_TYPE_ID = COURT_TYPE.ID"
 			+ " WHERE USERNAME=? AND PASSWORD=?";
 
 	public static User fill(User user, ResultSet rs) throws SQLException {
-		user = new User();
+		if (user == null) {
+			user = new User();
+		}
 		user.setId(rs.getInt(COLUMN_ID));
 		user.setUsername(rs.getString(COLUMN_USERNAME));
 		user.setFirstName(rs.getString(COLUMN_FIRST_NAME));
 		user.setLastName(rs.getString(COLUMN_LAST_NAME));
-		user.setClub(ClubModel.fill(new Club(), rs));
+		user.setClub(ClubModel.fill(user.getClub(), rs));
 		user.setType(rs.getInt(COLUMN_TYPE));
 		return user;
 	}

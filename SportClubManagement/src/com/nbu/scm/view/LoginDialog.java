@@ -92,6 +92,7 @@ public class LoginDialog {
 		} catch (Exception e){
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage());
 			alert.showAndWait();
+			e.printStackTrace();
 		}
 	}
 }

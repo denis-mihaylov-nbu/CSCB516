@@ -1,7 +1,7 @@
 package com.nbu.scm.view;
 
 import com.nbu.scm.bean.Club;
-import com.nbu.scm.view.layout.Calendar;
+import com.nbu.scm.view.layout.CalendarView;
 import com.nbu.scm.view.layout.Cell;
 import com.nbu.scm.view.layout.Row;
 
@@ -11,16 +11,20 @@ import javafx.scene.layout.GridPane;
 public class CalendarPane extends GridPane {
 	
 	private Club club;
+	private int page = 0;
 	
-	public CalendarPane(Club club) {
+	CalendarView calendarView;
+	ReservationPanel reservationPanel = new ReservationPanel(this);
+	
+	public CalendarPane(Club club) throws Exception {
 		super();
 		this.club = club;
-		init(0);
+		init();
 	}
 
-	public void init(int page){
+	public void init() throws Exception{
 
-		Calendar calendar = new Calendar(club, page);
+		calendarView = new CalendarView(club, page, this);
 
 		Button prev = new Button("<<");
 		Button next = new Button(">>");
@@ -29,7 +33,7 @@ public class CalendarPane extends GridPane {
 		add(prev, 1, rowId);
 		add(next, 2, rowId);
 		
-		for (Row row : calendar.getRows()) {
+		for (Row row : calendarView.getRows()) {
 			int cellId = 0;
 			for (Cell cell : row.getCells()) {
 				add(cell, cellId++, rowId);
@@ -38,6 +42,8 @@ public class CalendarPane extends GridPane {
 		}
 		
 	}
-	
 
+	public ReservationPanel getReservationPanel() {
+		return reservationPanel;
+	}
 }

@@ -13,6 +13,7 @@ public class Club {
 
 	public Club() {
 		super();
+		this.courts = new ArrayList<Court>();
 	}
 
 	public Club(int id, String name, String address, ClubType type, List<Court> courts) {
