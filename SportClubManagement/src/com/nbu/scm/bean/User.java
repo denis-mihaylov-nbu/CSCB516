@@ -1,7 +1,7 @@
 package com.nbu.scm.bean;
 
 public class User {
-
+	// Commit test
 	public static final int USER = 1;
 	public static final int ADMIN = 2;
 
