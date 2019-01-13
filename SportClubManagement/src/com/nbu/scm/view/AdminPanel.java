@@ -28,7 +28,7 @@ public class AdminPanel {
 		
 		
 		Tab userManagementTab = new Tab("User management");
-		GridPane userManagementGrid = new GridPane();
+		UserManagmentPane userManagementGrid = new UserManagmentPane(user);
 		
 		// TODO Page for managing administrators and receptionists
 		

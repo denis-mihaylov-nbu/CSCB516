@@ -1,8 +1,15 @@
 package com.nbu.scm.view;
 
+import java.awt.event.ActionListener;
+
+import javax.swing.JComboBox;
+
 import com.nbu.scm.bean.User;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -10,7 +17,7 @@ import javafx.scene.layout.GridPane;
 public class PersonalInfoPane extends GridPane {
 
 	private User user;
-	
+
 	public PersonalInfoPane(User user) {
 		super();
 		this.user = user;
@@ -29,6 +36,11 @@ public class PersonalInfoPane extends GridPane {
 		TextField unameField = new TextField(user.getUsername());
 		TextField passwField = new TextField();
 		
+		ObservableList<String> roleStrings = FXCollections.observableArrayList("Administrator","Receptionist");
+		
+		Label role = new Label("Role : ");
+		ComboBox<String> cmbBox = new ComboBox<String>(roleStrings);
+		
 		Button save = new Button("Save");
 		Button cancel = new Button("Cancel");
 		
@@ -40,9 +52,11 @@ public class PersonalInfoPane extends GridPane {
 		add(unameField, 1, 2);
 		add(passw, 0, 3);
 		add(passwField, 1, 3);
-		add(save, 0, 4);
-		add(cancel, 1, 4);
+		add(role, 0, 4);
+		add(cmbBox, 1, 4);
+		add(save, 0, 5);
+		add(cancel, 1, 5);
 		
 	}
-	
+
 }
