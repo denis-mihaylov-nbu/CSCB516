@@ -1,6 +1,6 @@
 package com.nbu.scm.bean;
 
-public class Reservation {
+public class Reservation implements Comparable<Reservation> {
 
 	private int id;
 	private Timestamp timestamp;
@@ -75,7 +75,16 @@ public class Reservation {
 
 	@Override
 	public String toString() {
+		return timestamp.getTimestampAsString() + ", " + court + ", " + name;
+	}
+
+	public String toShortString() {
 		return court + ", " + name;
+	}
+
+	@Override
+	public int compareTo(Reservation res) {
+		return toString().compareTo(res.toString());
 	}
 
 }

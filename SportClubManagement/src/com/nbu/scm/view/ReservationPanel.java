@@ -23,7 +23,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class ReservationPanel extends Stage {
+public class ReservationPanel {
 	
 	CalendarPane calendarPane;
 	
@@ -35,6 +35,7 @@ public class ReservationPanel extends Stage {
 	}
 
 	public void start(Reservation reservation) throws Exception {
+		Stage stage = new Stage();
 		GridPane grid = new GridPane();
 		grid.setHgap(10);
 		grid.setVgap(10);
@@ -60,9 +61,6 @@ public class ReservationPanel extends Stage {
 			public void handle(MouseEvent mouseEvent) {
 				reservation.setName(nameField.getText());
 				reservation.setCourt(courtComboBox.getValue());
-
-				// TODO call to BE to insert data in DB
-				System.out.println(reservation);
 				try {
 					reservationController.createReservation(reservation);
 					calendarPane.init();
@@ -71,7 +69,7 @@ public class ReservationPanel extends Stage {
 					Alert alert = new Alert(AlertType.ERROR, e.getMessage());
 					alert.showAndWait();
 				}
-				close();
+				stage.close();
 			}
 		});
 
@@ -79,7 +77,7 @@ public class ReservationPanel extends Stage {
 		cancel.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				close();
+				stage.close();
 			}
 		});
 
@@ -98,15 +96,15 @@ public class ReservationPanel extends Stage {
 			List<Reservation> reservations = reservationController.getByTimestamp(reservation.getTimestamp());
 			int row = 1;
 			for (int i = 0; i < reservations.size(); i++) {
-				grid.add(new Label(reservations.get(i).toString()), 0, row++);
+				grid.add(new Label(reservations.get(i).toShortString()), 0, row++);
 			}
 			grid.add(cancel, 1, row++);
 		}
 		
 
 		Scene scene = new Scene(grid, 300, 300);
-		setScene(scene);
-		show();
+		stage.setScene(scene);
+		stage.show();
 	}
 
 }

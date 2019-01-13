@@ -16,7 +16,13 @@ public class ReceptionistPanel {
 
 		TabPane tabPane = new TabPane();
 		tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
+		
+		Tab receiptTab = new Tab("Receipt");
+		ReceiptPane receiptGrid = new ReceiptPane(user.getClub());
 
+		receiptTab.setContent(receiptGrid);
+		tabPane.getTabs().add(receiptTab);
+		
 		Tab calendarTab = new Tab("Calendar");
 		CalendarPane calendarGrid = new CalendarPane(user.getClub());
 		

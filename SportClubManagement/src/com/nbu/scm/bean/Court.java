@@ -5,10 +5,11 @@ public class Court {
 	private int id;
 	private int number;
 	private CourtType type;
+	private double price;
 
 	public Court() {
 	}
-	
+
 	public Court(int id, int number, CourtType type) {
 		super();
 		this.id = id;
@@ -40,9 +41,17 @@ public class Court {
 		this.type = type;
 	}
 
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
 	@Override
 	public String toString() {
-		return + number + ", " + type;
+		return +number + ", " + type;
 	}
 
 }

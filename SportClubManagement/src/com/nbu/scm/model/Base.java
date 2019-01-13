@@ -10,6 +10,7 @@ public class Base {
 
 	public static Connection getConnection() throws SQLException {
 		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/scm?useSSL=false&serverTimezone=EET","root", "root");
+//		Connection con = DriverManager.getConnection("jdbc:mysql://pine.rdb.superhosting.bg:3306/denismih_scm?useSSL=false&serverTimezone=EET","denismih_root", "Simona1010");
 		return con;
 	}
 

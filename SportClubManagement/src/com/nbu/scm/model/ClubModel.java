@@ -15,6 +15,7 @@ public class ClubModel extends Base {
 	private static final String COLUMN_ID = "CLUB.ID";
 	private static final String COLUMN_NAME = "CLUB.NAME";
 	private static final String COLUMN_ADDRESS = "CLUB.ADDRESS";
+	private static final String COLUMN_PRICE = "CLUB.PRICE";
 	
 	private static final String GET_USER_BY_USERNAME_AND_PASSWORD = 
 			"SELECT * FROM CLUB LEFT JOIN CLUB_TYPE ON CLUB.TYPE = CLUB_TYPE.ID WHERE ID=?";

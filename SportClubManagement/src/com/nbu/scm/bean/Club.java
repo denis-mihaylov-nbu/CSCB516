@@ -16,15 +16,6 @@ public class Club {
 		this.courts = new ArrayList<Court>();
 	}
 
-	public Club(int id, String name, String address, ClubType type, List<Court> courts) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.address = address;
-		this.type = type;
-		this.courts = courts;
-	}
-
 	public int getId() {
 		return id;
 	}
