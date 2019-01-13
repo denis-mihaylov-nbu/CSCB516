@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.nbu.scm.bean.User;
 
@@ -14,13 +16,20 @@ public class UserModel extends Base {
 	private static final String COLUMN_FIRST_NAME = "USER.FIRST_NAME";
 	private static final String COLUMN_LAST_NAME = "USER.LAST_NAME";
 	private static final String COLUMN_TYPE = "USER.TYPE";
-	
+
 	private static final String GET_USER_BY_USERNAME_AND_PASSWORD = "SELECT * FROM USER"
 			+ " LEFT JOIN CLUB ON USER.CLUBID = CLUB.ID"
 			+ " LEFT JOIN CLUB_TYPE ON CLUB.TYPE = CLUB_TYPE.ID"
 			+ " LEFT JOIN COURT ON CLUB.ID = COURT.CLUB_TYPE_ID"
 			+ " LEFT JOIN COURT_TYPE ON COURT.COURT_TYPE_ID = COURT_TYPE.ID"
 			+ " WHERE USERNAME=? AND PASSWORD=?";
+	
+	private static final String GET_USER_BY_CLUB_ID = "SELECT * FROM USER"
+			+ " LEFT JOIN CLUB ON USER.CLUBID = CLUB.ID"
+			+ " LEFT JOIN CLUB_TYPE ON CLUB.TYPE = CLUB_TYPE.ID"
+			+ " LEFT JOIN COURT ON CLUB.ID = COURT.CLUB_TYPE_ID"
+			+ " LEFT JOIN COURT_TYPE ON COURT.COURT_TYPE_ID = COURT_TYPE.ID"
+			+ " WHERE CLUBID=?";
 
 	public static User fill(User user, ResultSet rs) throws SQLException {
 		if (user == null) {
@@ -53,6 +62,25 @@ public class UserModel extends Base {
 			close(preparedStatement);
 		}
 		return user;
+	}
+
+	public static Set<User> getUsersByClubId(int clubId) throws SQLException {
+		Set<User> users = new HashSet<User>();
+		Connection con = null;
+		PreparedStatement preparedStatement = null;
+		try {
+			con = getConnection();
+			preparedStatement = con.prepareStatement(GET_USER_BY_CLUB_ID);
+			preparedStatement.setInt(1, clubId);
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				users.add(fill(new User(), rs));
+			}
+		} finally {
+			close(con);
+			close(preparedStatement);
+		}
+		return users;
 	}
 
 }
