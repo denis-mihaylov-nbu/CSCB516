@@ -30,7 +30,7 @@ public class AdminPanel {
 		Tab userManagementTab = new Tab("User management");
 		UserManagmentPane userManagementGrid = new UserManagmentPane(user);
 		
-		// TODO Page for managing administrators and receptionists
+		//Page for managing administrators and receptionists
 		
 		userManagementTab.setContent(userManagementGrid);
 		tabPane.getTabs().add(userManagementTab);
@@ -40,7 +40,7 @@ public class AdminPanel {
 		Tab personalTab = new Tab("Personal information");
 		PersonalInfoPane personalGrid = new PersonalInfoPane(user);
 		
-		// TODO Personal information edit page
+		//Personal information edit page
 		
 		personalTab.setContent(personalGrid);
 		tabPane.getTabs().add(personalTab);

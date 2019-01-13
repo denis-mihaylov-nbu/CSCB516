@@ -180,6 +180,8 @@ public class ReservationModel extends Base {
 
 	public static Reservation updatePaid(Connection con, Reservation reservation, boolean paid) throws SQLException {
 		PreparedStatement ps = null;
+		System.out.println(paid);
+		System.exit(0);
 		try {
 			ps = con.prepareStatement(UPDATE_RESERVATION_PAID);
 			int i = 1;

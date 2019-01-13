@@ -5,6 +5,8 @@ import java.util.Set;
 import com.nbu.scm.bean.User;
 import com.nbu.scm.controller.UserController;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -38,10 +40,14 @@ public class UserManagmentPane extends GridPane {
 	private Button cancel = new Button("Cancel");
 
 	// Currently logged user!
+	private User loggedUser;
+	
 	private User user;
+	
+	private String selection;
 
-	public UserManagmentPane(User user) {
-		this.user = user;
+	public UserManagmentPane(User loggedUser) {
+		this.loggedUser = loggedUser;
 		init();
 	}
 
@@ -50,7 +56,7 @@ public class UserManagmentPane extends GridPane {
 		roleComboBox.setItems(FXCollections.observableArrayList(ROLES));
 		try {
 			usersComboBox.setItems(
-					FXCollections.observableArrayList(UserController.getUsersByClubId(user.getClub().getId())));
+					FXCollections.observableArrayList(UserController.getUsersByClubId(loggedUser.getClub().getId())));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -72,6 +78,15 @@ public class UserManagmentPane extends GridPane {
 		add(save, 0, 9);
 		add(cancel, 1, 9);
 
+		usersComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<User>() {
+
+			@Override
+			public void changed(ObservableValue arg, User oldValue, User newValue) {
+				handleComboBoxChange();
+			}
+			
+		});
+		
 		save.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -79,6 +94,7 @@ public class UserManagmentPane extends GridPane {
 				handleSaveButton(event);
 			}
 		});
+		
 		cancel.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -89,6 +105,15 @@ public class UserManagmentPane extends GridPane {
 
 	}
 
+	private void handleComboBoxChange() {
+		user = usersComboBox.getValue();
+		//Fill all fields in the pane from the user object
+		fnameField.setText(user.getFirstName());
+		lnameField.setText(user.getLastName());
+		unameField.setText(user.getUsername());
+//		passwField.setText(user.getPassword());
+	}
+	
 	protected void handleCancelButton(ActionEvent event) {
 		System.out.println("Cancel...");
 		// usersComboBox.setValue(null);
@@ -101,9 +126,22 @@ public class UserManagmentPane extends GridPane {
 	}
 
 	protected void handleSaveButton(ActionEvent event) {
-		//check if entered
-		//TODO New instance of User when not selected from Combobox and save
-		//if selected edit the selected instance and update.
+		// TODO New instance of User when not selected from Combobox and save
+		// if selected edit the selected instance and update.
+		
+	    if (user == null) {
+	    	// If user is not selected - create new instance
+	    	// user.id is 0 meaning insert
+	    	user = new User();
+	    }
+	    // if user is not null then user id is != 0 meaning update
+		String firstName = fnameField.getText();
+		String lastName = lnameField.getText();
+		String username = unameField.getText();
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		user.setUsername(username);
+
 		System.out.println(user);
 	}
 }

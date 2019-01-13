@@ -1,6 +1,6 @@
 package com.nbu.scm.view;
 
-import java.awt.event.ActionListener;
+//import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
 
@@ -15,8 +15,24 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 public class PersonalInfoPane extends GridPane {
-
+	private static final String[] ROLES = new String[] { "Administrator", "Receptionist" };
 	private User user;
+
+	private Label fname = new Label("First name : ");
+	private Label lname = new Label("Last name : ");
+	private Label uname = new Label("Username : ");
+	private Label passw = new Label("Password : ");
+
+	private TextField fnameField;
+	private TextField lnameField;
+	private TextField unameField;
+	private TextField passwField = new TextField();
+
+	private Label role = new Label("Role : ");
+	private ComboBox<String> roleComboBox = new ComboBox<String>();
+
+	private Button save = new Button("Save");
+	private Button cancel = new Button("Cancel");
 
 	public PersonalInfoPane(User user) {
 		super();
@@ -24,26 +40,14 @@ public class PersonalInfoPane extends GridPane {
 		init();
 	}
 
-	public void init(){
+	public void init() {
 
-		Label fname = new Label("First name : ");
-		Label lname = new Label("Last name : ");
-		Label uname = new Label("Username : ");
-		Label passw = new Label("Password : ");
-				
-		TextField fnameField = new TextField(user.getFirstName());
-		TextField lnameField = new TextField(user.getLastName());
-		TextField unameField = new TextField(user.getUsername());
-		TextField passwField = new TextField();
-		
-		ObservableList<String> roleStrings = FXCollections.observableArrayList("Administrator","Receptionist");
-		
-		Label role = new Label("Role : ");
-		ComboBox<String> cmbBox = new ComboBox<String>(roleStrings);
-		
-		Button save = new Button("Save");
-		Button cancel = new Button("Cancel");
-		
+		fnameField = new TextField(user.getFirstName());
+		lnameField = new TextField(user.getLastName());
+		unameField = new TextField(user.getUsername());
+
+		roleComboBox.setItems(FXCollections.observableArrayList(ROLES));
+
 		add(fname, 0, 0);
 		add(fnameField, 1, 0);
 		add(lname, 0, 1);
@@ -53,10 +57,10 @@ public class PersonalInfoPane extends GridPane {
 		add(passw, 0, 3);
 		add(passwField, 1, 3);
 		add(role, 0, 4);
-		add(cmbBox, 1, 4);
+		add(roleComboBox, 1, 4);
 		add(save, 0, 5);
 		add(cancel, 1, 5);
-		
+
 	}
 
 }

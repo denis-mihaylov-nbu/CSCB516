@@ -38,9 +38,9 @@ public class ReceptionistPanel {
 		tabPane.getTabs().add(clubTab);
 
 		Tab personalTab = new Tab("Personal information");
-		GridPane gridPersonal = new GridPane();
+		PersonalInfoPane gridPersonal = new PersonalInfoPane(user);
 
-		// TODO Personal information edit page
+		// Personal information edit page
 
 		personalTab.setContent(gridPersonal);
 		tabPane.getTabs().add(personalTab);
