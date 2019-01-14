@@ -11,7 +11,12 @@ public class ClubController {
 		return ClubModel.getClubs();
 	}
 
-	public static void save(Club club) throws Exception {
-		throw new UnsupportedOperationException("Not implemented yet");		
+	public static Club save(Club club) throws Exception {
+		if (club.getId() > 0) {
+			club = ClubModel.update(club);
+		} else {
+			club = ClubModel.insert(club);
+		}
+		return club;		
 	}
 }

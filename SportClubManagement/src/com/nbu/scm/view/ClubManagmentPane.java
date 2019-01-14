@@ -129,6 +129,13 @@ public class ClubManagmentPane extends GridPane {
 
 		try {
 			ClubController.save(club);
+			clubsComboBox.setItems(FXCollections.observableArrayList(ClubController.getClubs()));
+			clubsComboBox.setValue(club);
+			nameField.setText("");
+			adressField.setText("");
+			typeComboBox.setValue(null);
+			Alert alert = new Alert(AlertType.INFORMATION, "Success!");
+			alert.showAndWait();
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage());
 			alert.showAndWait();

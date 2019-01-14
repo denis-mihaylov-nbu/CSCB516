@@ -9,6 +9,7 @@ import java.util.Set;
 
 import com.nbu.scm.bean.Club;
 import com.nbu.scm.bean.ClubType;
+import com.nbu.scm.bean.Reservation;
 
 public class ClubModel extends Base {
 
@@ -23,6 +24,13 @@ public class ClubModel extends Base {
 	private static final String GET_CLUB_BY_ID = 
 			"SELECT * FROM CLUB LEFT JOIN CLUB_TYPE ON CLUB.TYPE = CLUB_TYPE.ID WHERE CLUB.ID=?";
 
+	private static final String INSERT_CLUB = "INSERT INTO "
+			+ "CLUB (NAME, ADDRESS, TYPE) " + "VALUES (?, ?, ?)";
+	
+	private static final String UPDATE_CLUB = "UPDATE CLUB "
+			+ "SET NAME = ?, ADDRESS = ?, TYPE = ? " 
+			+ "WHERE ID = ? ";
+	
 	public static Club fill(ResultSet rs) throws SQLException {
 		return fill(null, rs);
 	}
@@ -73,6 +81,43 @@ public class ClubModel extends Base {
 		} finally {
 			close(con);
 			close(preparedStatement);
+		}
+		return club;
+	}
+
+	public static Club update(Club club) throws SQLException {
+		Connection con = null;
+		PreparedStatement preparedStatement = null;
+		try {
+			con = getConnection();
+			preparedStatement = con.prepareStatement(UPDATE_CLUB);
+			int i = 1;
+			preparedStatement.setString(i++, club.getName());
+			preparedStatement.setString(i++, club.getAddress());
+			preparedStatement.setInt(i++, club.getType().getId());
+			preparedStatement.setInt(i++, club.getId());
+			preparedStatement.executeUpdate();
+		} finally {
+			close(con);
+			close(preparedStatement);
+		}
+		return club;
+	}
+
+	public static Club insert(Club club) throws SQLException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		try {
+			con = getConnection();
+			ps = con.prepareStatement(INSERT_CLUB);
+			int i = 1;
+			ps.setString(i++, club.getName());
+			ps.setString(i++, club.getAddress());
+			ps.setInt(i++, club.getType().getId());
+			ps.executeUpdate();
+		} finally {
+			close(con);
+			close(ps);
 		}
 		return club;
 	}
