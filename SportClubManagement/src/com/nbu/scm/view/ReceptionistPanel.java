@@ -30,7 +30,7 @@ public class ReceptionistPanel {
 		tabPane.getTabs().add(calendarTab);
 
 		Tab clubTab = new Tab("Club information");
-		GridPane clubGrid = new GridPane();
+		ClubManagmentPane clubGrid = new ClubManagmentPane(user);
 
 		// TODO Show all club information and courts - read only
 

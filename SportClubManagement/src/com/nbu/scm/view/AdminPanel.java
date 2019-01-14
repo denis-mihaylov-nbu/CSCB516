@@ -20,7 +20,7 @@ public class AdminPanel {
 		Tab clubTab = new Tab("Club management");
 		ClubManagmentPane clubGrid = new ClubManagmentPane(user);
 		
-		// TODO Show all club information and courts - editable
+		// Show all club information and courts - editable
 		
 		clubTab.setContent(clubGrid);
 		tabPane.getTabs().add(clubTab);
