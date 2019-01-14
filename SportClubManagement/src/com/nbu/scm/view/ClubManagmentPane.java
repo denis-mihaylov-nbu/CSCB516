@@ -134,6 +134,8 @@ public class ClubManagmentPane extends GridPane {
 			nameField.setText("");
 			adressField.setText("");
 			typeComboBox.setValue(null);
+			Alert alert = new Alert(AlertType.INFORMATION, "Success!");
+			alert.showAndWait();
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage());
 			alert.showAndWait();
