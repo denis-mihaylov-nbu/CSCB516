@@ -59,4 +59,9 @@ public class Club {
 		courts.add(court);
 	}
 
+	@Override
+	public String toString() {
+		return "Club [name=" + name + ", address=" + address + ", type=" + type + "]";
+	}
+
 }

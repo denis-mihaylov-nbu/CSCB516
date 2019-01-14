@@ -18,7 +18,7 @@ public class AdminPanel {
 		tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 				
 		Tab clubTab = new Tab("Club management");
-		GridPane clubGrid = new GridPane();
+		ClubManagmentPane clubGrid = new ClubManagmentPane(user);
 		
 		// TODO Show all club information and courts - editable
 		

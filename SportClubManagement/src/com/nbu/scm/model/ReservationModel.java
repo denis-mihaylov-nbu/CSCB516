@@ -49,10 +49,8 @@ public class ReservationModel extends Base {
 	private static final String GET_RESERVATIONS_BY_TIMESTAMP = "SELECT * FROM RESERVATION "
 			+ "LEFT JOIN COURT ON RESERVATION.COURT_ID = COURT.ID "
 			+ "LEFT JOIN COURT_TYPE ON COURT.COURT_TYPE_ID = COURT_TYPE.ID " + "WHERE RESERVATION.TIMESTAMP = ?";
-	
-	private static final String UPDATE_RESERVATION_PAID = "UPDATE RESERVATION " + 
-			"SET PAID = ? " + 
-			"WHERE ID = ? ";
+
+	private static final String UPDATE_RESERVATION_PAID = "UPDATE RESERVATION " + "SET PAID = ? " + "WHERE ID = ? ";
 
 	public static List<Reservation> get(ReservationFilter filter) throws SQLException {
 		List<Reservation> reservations = new ArrayList<Reservation>();
@@ -178,6 +176,7 @@ public class ReservationModel extends Base {
 		return reservations;
 	}
 
+//where do we use updatePaid method
 	public static Reservation updatePaid(Connection con, Reservation reservation, boolean paid) throws SQLException {
 		PreparedStatement ps = null;
 		System.out.println(paid);
