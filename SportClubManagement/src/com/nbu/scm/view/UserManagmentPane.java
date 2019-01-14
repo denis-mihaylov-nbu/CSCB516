@@ -10,10 +10,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 
 public class UserManagmentPane extends GridPane {
@@ -23,29 +25,30 @@ public class UserManagmentPane extends GridPane {
 	// Users combo box
 	private Label selectUser = new Label("Select User : ");
 	private ComboBox<User> usersComboBox = new ComboBox<User>();
-
 	private Label createNew = new Label("or create new :");
+	
 	private Label fname = new Label("First name : ");
-	private Label lname = new Label("Last name : ");
-	private Label uname = new Label("Username : ");
-	private Label passw = new Label("Password : ");
 	private TextField fnameField = new TextField();
+	
+	private Label lname = new Label("Last name : ");
 	private TextField lnameField = new TextField();
+	
+	private Label uname = new Label("Username : ");
 	private TextField unameField = new TextField();
+	
+	private Label passw = new Label("Password : ");
 	private TextField passwField = new TextField();
+	
 	private Label role = new Label("Role : ");
 	private ComboBox<String> roleComboBox = new ComboBox<String>();
 
 	private Button save = new Button("Save");
 	private Button cancel = new Button("Cancel");
 
-	// Currently logged user!
 	private User loggedUser;
 	
 	private User user;
 	
-	private String selection;
-
 	public UserManagmentPane(User loggedUser) {
 		this.loggedUser = loggedUser;
 		init();
@@ -58,7 +61,8 @@ public class UserManagmentPane extends GridPane {
 			usersComboBox.setItems(
 					FXCollections.observableArrayList(UserController.getUsersByClubId(loggedUser.getClub().getId())));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			Alert alert = new Alert(AlertType.ERROR, e.getMessage());
+			alert.showAndWait();
 			e.printStackTrace();
 		}
 
