@@ -16,6 +16,12 @@ public class Club {
 		this.courts = new ArrayList<Court>();
 	}
 
+	public Club(String name, String adress) {
+		this.name = name;
+		this.address = adress;
+//		this.type = type;
+	}
+
 	public int getId() {
 		return id;
 	}

@@ -1,9 +1,16 @@
 package com.nbu.scm.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.DefaultComboBoxModel;
+
 import com.nbu.scm.bean.Club;
 import com.nbu.scm.bean.User;
 import com.nbu.scm.controller.UserController;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,7 +22,7 @@ import javafx.scene.layout.GridPane;
 
 public class ClubManagmentPane extends GridPane {
 	private static final String[] TYPES = new String[] { "Football", "Tennis" };
-
+	private List<Club> clubType = new ArrayList<Club>();
 
 	private Label select = new Label("Select club for edit : ");
 	private ComboBox<Club> clubsComboBox = new ComboBox<Club>();
@@ -44,45 +51,76 @@ public class ClubManagmentPane extends GridPane {
 	}
 
 	public void init() {
-		
-		typeComboBox.setItems(FXCollections.observableArrayList(TYPES));
+
+		clubType.add(new Club("Zona Sport", "Mall Bulgaria"));
+		clubType.add(new Club("Maleevi", "Lozenets"));
+
+		clubsComboBox.setItems(FXCollections.observableArrayList(clubType));
 
 		nameField = new TextField(club.getName());
 		adressField = new TextField(club.getAddress());
 
-		if (loggedUser.getId() == 1) {
-//			 = new User();
-		} else {
-//		 changing user's club
-
-			try {
-//				clubsComboBox.setItems(FXCollections.observableArrayList());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			add(name, 0, 0);
-			add(nameField, 1, 0);
-			add(adress, 0, 1);
-			add(adressField, 1, 1);
-			add(type, 0, 2);
-			add(typeComboBox, 1, 2);
-			add(save, 0, 3);
-			add(cancel, 1, 3);
-
-			save.setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent event) {
-					// TODO Auto-generated method stub
-					handleSaveButton(event);
-				}
-			});
+		try {
+			typeComboBox.setItems(FXCollections.observableArrayList(TYPES));
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
+		int index = 0;
+		if (loggedUser.getId() == 1) {
+//			 changing selected club
+			System.out.println("super admin -> admin");
+			add(clubsComboBox, 0, index++);
+		}
+
+		add(name, 0, index++);
+		add(nameField, 0, index++);
+		add(adress, 0, index++);
+		add(adressField, 0, index++);
+		add(type, 0, index++);
+		add(typeComboBox, 0, index++);
+		add(save, 0, index);
+		add(cancel, 1, index);
+
+		clubsComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Club>() {
+			@Override
+			public void changed(ObservableValue observable, Club oldValue, Club newValue) {
+				handleComboBoxChange();
+			}
+		});
+
+		save.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				handleSaveButton(event);
+			}
+		});
+		cancel.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				handleCancelButton(event);
+			}
+		});
+
+	}
+
+	protected void handleCancelButton(ActionEvent event) {
+		System.out.println("Cancel...");
+		nameField.setText("");
+		adressField.setText("");
+		//TODO type
+	}
+
+	protected void handleComboBoxChange() {
+		this.club = clubsComboBox.getValue();
+		System.out.println(club);
+		nameField.setText(club.getName());
+		adressField.setText(club.getAddress());
 	}
 
 	protected void handleSaveButton(ActionEvent event) {
-		// TODO Auto-generated method stub
 
 		if (club == null) {
 			club = new Club();

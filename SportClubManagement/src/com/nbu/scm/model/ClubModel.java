@@ -18,7 +18,7 @@ public class ClubModel extends Base {
 	private static final String COLUMN_PRICE = "CLUB.PRICE";
 	
 	private static final String GET_USER_BY_USERNAME_AND_PASSWORD = 
-			"SELECT * FROM CLUB LEFT JOIN CLUB_TYPE ON CLUB.TYPE = CLUB_TYPE.ID WHERE ID=?";
+			"SELECT * FROM CLUB LEFT JOIN CLUB_TYPE ON CLUB.TYPE = CLUB_TYPE.ID WHERE CLUB.ID=?";
 	
 	public static Club fill(Club club, ResultSet rs) throws SQLException {
 		if (club == null) {
