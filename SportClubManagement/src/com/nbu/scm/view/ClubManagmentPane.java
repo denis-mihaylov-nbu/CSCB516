@@ -1,31 +1,29 @@
 package com.nbu.scm.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.DefaultComboBoxModel;
-
 import com.nbu.scm.bean.Club;
+import com.nbu.scm.bean.ClubType;
 import com.nbu.scm.bean.User;
-import com.nbu.scm.controller.UserController;
+import com.nbu.scm.controller.ClubController;
+import com.nbu.scm.controller.ClubTypeController;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 
 public class ClubManagmentPane extends GridPane {
-	private static final String[] TYPES = new String[] { "Football", "Tennis" };
-	private List<Club> clubType = new ArrayList<Club>();
-
-	private Label select = new Label("Select club for edit : ");
+	
+	private Label selectClubLabel = new Label("Select club for edit : ");
 	private ComboBox<Club> clubsComboBox = new ComboBox<Club>();
+	private Label newClubLabel = new Label("or create new one");
 
 	private Label name = new Label("Name : ");
 	private TextField nameField;
@@ -34,43 +32,49 @@ public class ClubManagmentPane extends GridPane {
 	private TextField adressField;
 
 	private Label type = new Label("Type : ");
-	// type combobox
-	private ComboBox<String> typeComboBox = new ComboBox<String>();
+	
+	private ComboBox<ClubType> typeComboBox = new ComboBox<ClubType>();
 
 	private Button save = new Button("Save");
 	private Button cancel = new Button("Cancel");
 
 	private User loggedUser;
-
+	private boolean isSuperAdmin;
 	private Club club;
 
 	public ClubManagmentPane(User loggedUser) {
 		this.loggedUser = loggedUser;
 		this.club = loggedUser.getClub();
+		this.isSuperAdmin = loggedUser.getId() == 1;
 		init();
 	}
 
 	public void init() {
-
-		clubType.add(new Club("Zona Sport", "Mall Bulgaria"));
-		clubType.add(new Club("Maleevi", "Lozenets"));
-
-		clubsComboBox.setItems(FXCollections.observableArrayList(clubType));
-
-		nameField = new TextField(club.getName());
-		adressField = new TextField(club.getAddress());
-
 		try {
-			typeComboBox.setItems(FXCollections.observableArrayList(TYPES));
+			typeComboBox.setItems(FXCollections.observableArrayList(ClubTypeController.getClubTypes()));
 		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.ERROR, e.getMessage());
+			alert.showAndWait();
 			e.printStackTrace();
 		}
+		
+		nameField = new TextField(club.getName());
+		adressField = new TextField(club.getAddress());
+		typeComboBox.setValue(club.getType());
 
 		int index = 0;
-		if (loggedUser.getId() == 1) {
-//			 changing selected club
-			System.out.println("super admin -> admin");
+		if (isSuperAdmin) {
+			try {
+				clubsComboBox.setItems(FXCollections.observableArrayList(ClubController.getClubs()));
+			} catch (Exception e) {
+				Alert alert = new Alert(AlertType.ERROR, e.getMessage());
+				alert.showAndWait();
+				e.printStackTrace();
+			}
+
+			add(selectClubLabel, 0, index++);
 			add(clubsComboBox, 0, index++);
+			add(newClubLabel, 0, index++);
 		}
 
 		add(name, 0, index++);
@@ -106,34 +110,43 @@ public class ClubManagmentPane extends GridPane {
 
 	}
 
-	protected void handleCancelButton(ActionEvent event) {
-		System.out.println("Cancel...");
-		nameField.setText("");
-		adressField.setText("");
-		//TODO type
-	}
-
-	protected void handleComboBoxChange() {
+	private void handleComboBoxChange() {
 		this.club = clubsComboBox.getValue();
-		System.out.println(club);
-		nameField.setText(club.getName());
-		adressField.setText(club.getAddress());
+		if (club != null) {
+			nameField.setText(club.getName());
+			adressField.setText(club.getAddress());
+			typeComboBox.setValue(club.getType());
+		}
 	}
 
-	protected void handleSaveButton(ActionEvent event) {
-
+	private void handleSaveButton(ActionEvent event) {
 		if (club == null) {
 			club = new Club();
 		}
-		String name = nameField.getText();
-		String adress = adressField.getText();
-		club.setName(name);
-		club.setAddress(adress);
+		club.setName(nameField.getText());
+		club.setAddress(adressField.getText());
+		club.setType(typeComboBox.getValue());
 
-		// TODO type
-
-		System.out.println(club);
-
+		try {
+			ClubController.save(club);
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.ERROR, e.getMessage());
+			alert.showAndWait();
+			e.printStackTrace();
+		}
 	}
-
+	
+	private void handleCancelButton(ActionEvent event) {
+		if (isSuperAdmin) {
+			clubsComboBox.setValue(null);
+			nameField.setText("");
+			adressField.setText("");
+			typeComboBox.setValue(null);
+		} else {
+			clubsComboBox.setValue(loggedUser.getClub());
+			nameField.setText(loggedUser.getClub().getName());
+			adressField.setText(loggedUser.getClub().getAddress());
+			typeComboBox.setValue(loggedUser.getClub().getType());
+		}
+	}
 }

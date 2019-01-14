@@ -67,7 +67,7 @@ public class Club {
 
 	@Override
 	public String toString() {
-		return "Club [name=" + name + ", address=" + address + ", type=" + type + "]";
+		return name + ", " + address + ", " + type;
 	}
 
 }
