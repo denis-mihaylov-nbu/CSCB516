@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.Set;
 
 import com.nbu.scm.bean.Club;
@@ -41,11 +41,12 @@ public class ClubModel extends Base {
 		club.setName(rs.getString(COLUMN_NAME));
 		club.setAddress(rs.getString(COLUMN_ADDRESS));
 		club.setType(ClubTypeModel.fill(new ClubType(), rs));
+		club.setCourts(CourtModel.getCourtsById(club.getId()));
 		return club;
 	}
 
 	public static Set<Club> getClubs() throws SQLException {
-		Set<Club> clubs = new HashSet<Club>();
+		Set<Club> clubs = new TreeSet<Club>();
 		Connection con = null;
 		PreparedStatement preparedStatement = null;
 		try {

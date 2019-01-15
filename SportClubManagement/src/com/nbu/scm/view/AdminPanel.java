@@ -29,6 +29,17 @@ public class AdminPanel {
 			e.printStackTrace();
 		}
 		
+		try {		
+			Tab clubTab = new Tab("Court management");
+			CourtManagementPane courtGrid = new CourtManagementPane(user);
+			clubTab.setContent(courtGrid);
+			tabPane.getTabs().add(clubTab);
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.ERROR, e.getMessage());
+			alert.showAndWait();
+			e.printStackTrace();
+		}
+				
 		try {
 			Tab userManagementTab = new Tab("User management");
 			UserManagmentPane userManagementGrid;

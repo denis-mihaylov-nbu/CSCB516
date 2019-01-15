@@ -4,7 +4,7 @@ import java.security.NoSuchAlgorithmException;
 
 import com.nbu.scm.security.Cryptography;
 
-public class User {
+public class User implements Comparable<User> {
 	
 	private int id;
 	private String username;
@@ -81,6 +81,11 @@ public class User {
 	@Override
 	public String toString() {
 		return firstName + " " + lastName;
+	}
+
+	@Override
+	public int compareTo(User o) {
+		return this.toString().compareTo(o.toString());
 	}
 
 }

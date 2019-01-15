@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.Set;
 
 import com.nbu.scm.bean.RoleType;
@@ -76,7 +76,7 @@ public class UserModel extends Base {
 	}
 
 	public static Set<User> getUsersByClubId(int clubId) throws SQLException {
-		Set<User> users = new HashSet<User>();
+		Set<User> users = new TreeSet<User>();
 		Connection con = null;
 		PreparedStatement preparedStatement = null;
 		try {

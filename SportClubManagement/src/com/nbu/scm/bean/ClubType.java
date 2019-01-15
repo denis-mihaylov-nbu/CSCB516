@@ -1,6 +1,6 @@
 package com.nbu.scm.bean;
 
-public class ClubType {
+public class ClubType implements Comparable<ClubType> {
 
 	private int id;
 	private String name;
@@ -33,6 +33,11 @@ public class ClubType {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	@Override
+	public int compareTo(ClubType o) {
+		return this.toString().compareTo(o.toString());
 	}
 	
 	

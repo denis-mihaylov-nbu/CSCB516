@@ -1,11 +1,12 @@
 package com.nbu.scm.bean;
 
-public class Court {
+public class Court implements Comparable<Court> {
 
 	private int id;
 	private int number;
 	private CourtType type;
 	private double price;
+	private int clubId;
 
 	public Court() {
 	}
@@ -49,9 +50,22 @@ public class Court {
 		this.price = price;
 	}
 
+	public int getClubId() {
+		return clubId;
+	}
+
+	public void setClubId(int clubId) {
+		this.clubId = clubId;
+	}
+
 	@Override
 	public String toString() {
 		return +number + ", " + type;
+	}
+
+	@Override
+	public int compareTo(Court o) {
+		return this.toString().compareTo(o.toString());
 	}
 
 }

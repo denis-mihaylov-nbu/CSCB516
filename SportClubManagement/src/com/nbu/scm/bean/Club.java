@@ -1,19 +1,19 @@
 package com.nbu.scm.bean;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
-public class Club {
+public class Club implements Comparable<Club> {
 
 	private int id;
 	private String name;
 	private String address;
 	private ClubType type;
-	private List<Court> courts;
+	private Set<Court> courts;
 
 	public Club() {
 		super();
-		this.courts = new ArrayList<Court>();
+		this.courts = new TreeSet<Court>();
 	}
 
 	public Club(String name, String adress) {
@@ -54,13 +54,13 @@ public class Club {
 		this.type = type;
 	}
 
-	public List<Court> getCourts() {
+	public Set<Court> getCourts() {
 		return courts;
 	}
 
 	public void addCourt(Court court) {
 		if (courts == null) {
-			courts = new ArrayList<Court>();
+			courts = new TreeSet<Court>();
 		}
 		courts.add(court);
 	}
@@ -68,6 +68,15 @@ public class Club {
 	@Override
 	public String toString() {
 		return name + ", " + address + ", " + type;
+	}
+
+	public void setCourts(Set<Court> courts) {
+		this.courts = courts;
+	}
+
+	@Override
+	public int compareTo(Club o) {
+		return this.toString().compareTo(o.toString());
 	}
 
 }

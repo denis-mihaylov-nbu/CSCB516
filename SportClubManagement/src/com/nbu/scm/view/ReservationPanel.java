@@ -76,7 +76,6 @@ public class ReservationPanel extends GridPane {
 				stage.close();
 			}
 		});
-
 		add(date, 0, 0);
 		add(dateField, 1, 0);
 		
@@ -109,7 +108,6 @@ public class ReservationPanel extends GridPane {
 			reservationController.createReservation(reservation);
 			calendarPane.init();
 		} catch (Exception e) {
-			e.printStackTrace(System.out);
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage());
 			alert.showAndWait();
 		}

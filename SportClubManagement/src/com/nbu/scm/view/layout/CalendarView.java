@@ -10,6 +10,7 @@ import com.nbu.scm.bean.Reservation;
 import com.nbu.scm.bean.Timestamp;
 import com.nbu.scm.controller.CourtController;
 import com.nbu.scm.view.CalendarPane;
+import com.nbu.scm.view.ReservationPanel;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -80,7 +81,7 @@ public class CalendarView {
 		    	Court court =  new Court();
 		    	try {
 		    		Timestamp t = new Timestamp(source.getCal());
-		    		calendarPane.getReservationPanel().start(new Reservation(-1, t, club, court, ""));
+		    		new ReservationPanel(calendarPane).start(new Reservation(-1, t, club, court, ""));
 				} catch (Exception e) {
 					Alert alert = new Alert(AlertType.ERROR, e.getMessage());
 					alert.showAndWait();

@@ -1,6 +1,6 @@
 package com.nbu.scm.bean;
 
-public class CourtType {
+public class CourtType implements Comparable<CourtType> {
 
 	private int id;
 	private String type;
@@ -33,6 +33,11 @@ public class CourtType {
 	@Override
 	public String toString() {
 		return type;
+	}
+
+	@Override
+	public int compareTo(CourtType o) {
+		return this.toString().compareTo(o.toString());
 	}
 
 }

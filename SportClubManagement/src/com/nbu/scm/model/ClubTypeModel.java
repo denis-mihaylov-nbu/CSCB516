@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.Set;
 
 import com.nbu.scm.bean.ClubType;
@@ -26,7 +26,7 @@ public class ClubTypeModel extends Base {
 	}
 
 	public static Set<ClubType> getClubTypes() throws SQLException {
-		Set<ClubType> clubs = new HashSet<ClubType>();
+		Set<ClubType> clubs = new TreeSet<ClubType>();
 		Connection con = null;
 		PreparedStatement preparedStatement = null;
 		try {
