@@ -1,16 +1,19 @@
 package com.nbu.scm.view;
 
 import com.nbu.scm.bean.User;
+import com.nbu.scm.controller.UserController;
 
-import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 
 public class PersonalInfoPane extends GridPane {
-	private static final String[] ROLES = new String[] { "Administrator", "Receptionist" };
+	
 	private User user;
 
 	private Label fname = new Label("First name : ");
@@ -23,11 +26,7 @@ public class PersonalInfoPane extends GridPane {
 	private TextField unameField;
 	private TextField passwField = new TextField();
 
-	private Label role = new Label("Role : ");
-	private ComboBox<String> roleComboBox = new ComboBox<String>();
-
 	private Button save = new Button("Save");
-	private Button cancel = new Button("Cancel");
 
 	public PersonalInfoPane(User user) {
 		super();
@@ -41,8 +40,6 @@ public class PersonalInfoPane extends GridPane {
 		lnameField = new TextField(user.getLastName());
 		unameField = new TextField(user.getUsername());
 
-		roleComboBox.setItems(FXCollections.observableArrayList(ROLES));
-
 		add(fname, 0, 0);
 		add(fnameField, 1, 0);
 		add(lname, 0, 1);
@@ -51,11 +48,33 @@ public class PersonalInfoPane extends GridPane {
 		add(unameField, 1, 2);
 		add(passw, 0, 3);
 		add(passwField, 1, 3);
-		add(role, 0, 4);
-		add(roleComboBox, 1, 4);
-		add(save, 0, 5);
-		add(cancel, 1, 5);
+		add(save, 0, 4);		
 
+		save.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				handleSaveButton(event);
+			}
+		});
+
+	}
+	
+	protected void handleSaveButton(ActionEvent event) {
+		user.setUsername(unameField.getText());
+		user.setPassword(passwField.getText());
+		user.setFirstName(fnameField.getText());
+		user.setLastName(lnameField.getText());
+
+		try {
+			UserController.save(user);
+			Alert alert = new Alert(AlertType.INFORMATION, "Success!");
+			alert.showAndWait();
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.ERROR, e.getMessage());
+			alert.showAndWait();
+			e.printStackTrace();
+		}
 	}
 
 }

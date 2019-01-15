@@ -1,5 +1,6 @@
 package com.nbu.scm.model;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 import com.nbu.scm.bean.RoleType;
 import com.nbu.scm.bean.User;
+import com.nbu.scm.security.Cryptography;
 
 public class UserModel extends Base {
 
@@ -98,13 +100,13 @@ public class UserModel extends Base {
 		return users;
 	}
 
-	public static User update(User user) throws SQLException {
+	public static User update(User user) throws SQLException, NoSuchAlgorithmException {
 		Connection con = null;
 		PreparedStatement preparedStatement = null;
 		try {
 			con = getConnection();
 			int i = 1;
-			if (user.getPassword().length() > 0) {
+			if (!user.getPassword().equals(Cryptography.cryptSHA256(""))) {
 				preparedStatement = con.prepareStatement(UPDATE_USER);
 				preparedStatement.setString(i++, user.getPassword());
 			} else {
