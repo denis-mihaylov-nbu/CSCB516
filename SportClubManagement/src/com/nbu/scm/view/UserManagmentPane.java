@@ -126,18 +126,11 @@ public class UserManagmentPane extends GridPane {
 	private void handleComboBoxChange() {
 		user = usersComboBox.getValue();
 		if (user != null) {
-//		try {
 			fnameField.setText(user.getFirstName());
 			lnameField.setText(user.getLastName());
 			unameField.setText(user.getUsername());
 			roleComboBox.setValue(user.getType());
 			clubComboBox.setValue(user.getClub());
-//		} catch (NullPointerException e) {
-//			Alert alert = new Alert(AlertType.ERROR, e.getMessage());
-//			alert.showAndWait();
-//			e.printStackTrace();
-////			System.out.println("Changes was not saved!");
-//		}
 		}
 	}
 
