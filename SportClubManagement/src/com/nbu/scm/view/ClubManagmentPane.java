@@ -20,7 +20,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 
 public class ClubManagmentPane extends GridPane {
-	
+
 	private Label selectClubLabel = new Label("Select club for edit : ");
 	private ComboBox<Club> clubsComboBox = new ComboBox<Club>();
 	private Label newClubLabel = new Label("or create new one");
@@ -29,10 +29,10 @@ public class ClubManagmentPane extends GridPane {
 	private TextField nameField = new TextField();
 
 	private Label adress = new Label("Adress");
-	private TextField adressField= new TextField();
+	private TextField adressField = new TextField();
 
 	private Label type = new Label("Type : ");
-	
+
 	private ComboBox<ClubType> typeComboBox = new ComboBox<ClubType>();
 
 	private Button save = new Button("Save");
@@ -42,10 +42,13 @@ public class ClubManagmentPane extends GridPane {
 	private boolean isSuperAdmin;
 	private Club club;
 
+	private boolean isReceptionist;
+
 	public ClubManagmentPane(User loggedUser) throws Exception {
 		this.loggedUser = loggedUser;
 		this.club = loggedUser.getClub();
 		this.isSuperAdmin = loggedUser.getId() == 1;
+		this.isReceptionist = loggedUser.getType().getId() == 1;
 		init();
 	}
 
@@ -71,11 +74,17 @@ public class ClubManagmentPane extends GridPane {
 		add(adressField, 0, index++);
 		add(type, 0, index++);
 		add(typeComboBox, 0, index++);
-		add(save, 0, index);
-		add(cancel, 1, index);
+		if (!isReceptionist) {
+			add(save, 0, index);
+			add(cancel, 1, index);
+		} else {
+			nameField.setDisable(true);
+			adressField.setDisable(true);
+			typeComboBox.setDisable(true);
+		}
 
 		clubsComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Club>() {
-			
+
 			@SuppressWarnings("rawtypes")
 			@Override
 			public void changed(ObservableValue observable, Club oldValue, Club newValue) {
@@ -132,7 +141,7 @@ public class ClubManagmentPane extends GridPane {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void handleCancelButton(ActionEvent event) {
 		if (isSuperAdmin) {
 			clubsComboBox.setValue(null);
