@@ -1,17 +1,18 @@
 package com.nbu.scm.bean;
 
-public class User {
-	// Commit test
-	public static final int USER = 1;
-	public static final int ADMIN = 2;
+import java.security.NoSuchAlgorithmException;
 
+import com.nbu.scm.security.Cryptography;
+
+public class User {
+	
 	private int id;
 	private String username;
 	private String password;
 	private String firstName;
 	private String lastName;
 	private Club club;
-	private int type;
+	private RoleType type;
 
 	public User() {
 		super();
@@ -53,6 +54,14 @@ public class User {
 		return password;
 	}
 
+	public void setPassword(String text) {
+		try {
+			this.password = Cryptography.cryptSHA256(text);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public Club getClub() {
 		return club;
 	}
@@ -61,11 +70,11 @@ public class User {
 		this.club = club;
 	}
 
-	public int getType() {
+	public RoleType getType() {
 		return type;
 	}
 
-	public void setType(int type) {
+	public void setType(RoleType type) {
 		this.type = type;
 	}
 

@@ -26,10 +26,10 @@ public class ClubManagmentPane extends GridPane {
 	private Label newClubLabel = new Label("or create new one");
 
 	private Label name = new Label("Name : ");
-	private TextField nameField;
+	private TextField nameField = new TextField();
 
 	private Label adress = new Label("Adress");
-	private TextField adressField;
+	private TextField adressField= new TextField();
 
 	private Label type = new Label("Type : ");
 	
@@ -42,39 +42,27 @@ public class ClubManagmentPane extends GridPane {
 	private boolean isSuperAdmin;
 	private Club club;
 
-	public ClubManagmentPane(User loggedUser) {
+	public ClubManagmentPane(User loggedUser) throws Exception {
 		this.loggedUser = loggedUser;
 		this.club = loggedUser.getClub();
 		this.isSuperAdmin = loggedUser.getId() == 1;
 		init();
 	}
 
-	public void init() {
-		try {
-			typeComboBox.setItems(FXCollections.observableArrayList(ClubTypeController.getClubTypes()));
-		} catch (Exception e) {
-			Alert alert = new Alert(AlertType.ERROR, e.getMessage());
-			alert.showAndWait();
-			e.printStackTrace();
-		}
-		
-		nameField = new TextField(club.getName());
-		adressField = new TextField(club.getAddress());
-		typeComboBox.setValue(club.getType());
+	public void init() throws Exception {
+		typeComboBox.setItems(FXCollections.observableArrayList(ClubTypeController.getClubTypes()));
 
 		int index = 0;
 		if (isSuperAdmin) {
-			try {
-				clubsComboBox.setItems(FXCollections.observableArrayList(ClubController.getClubs()));
-			} catch (Exception e) {
-				Alert alert = new Alert(AlertType.ERROR, e.getMessage());
-				alert.showAndWait();
-				e.printStackTrace();
-			}
+			clubsComboBox.setItems(FXCollections.observableArrayList(ClubController.getClubs()));
 
 			add(selectClubLabel, 0, index++);
 			add(clubsComboBox, 0, index++);
 			add(newClubLabel, 0, index++);
+		} else {
+			nameField.setText(club.getName());
+			adressField.setText(club.getAddress());
+			typeComboBox.setValue(club.getType());
 		}
 
 		add(name, 0, index++);
@@ -87,6 +75,8 @@ public class ClubManagmentPane extends GridPane {
 		add(cancel, 1, index);
 
 		clubsComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Club>() {
+			
+			@SuppressWarnings("rawtypes")
 			@Override
 			public void changed(ObservableValue observable, Club oldValue, Club newValue) {
 				handleComboBoxChange();

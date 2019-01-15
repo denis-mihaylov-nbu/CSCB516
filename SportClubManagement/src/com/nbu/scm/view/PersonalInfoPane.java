@@ -1,13 +1,8 @@
 package com.nbu.scm.view;
 
-//import java.awt.event.ActionListener;
-
-import javax.swing.JComboBox;
-
 import com.nbu.scm.bean.User;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;

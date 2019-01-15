@@ -2,6 +2,7 @@ package com.nbu.scm.view;
 
 import java.security.NoSuchAlgorithmException;
 
+import com.nbu.scm.bean.RoleType;
 import com.nbu.scm.bean.User;
 import com.nbu.scm.controller.LoginController;
 import com.nbu.scm.security.Cryptography;
@@ -78,7 +79,7 @@ public class LoginDialog {
 		try {
 			User user = new LoginController().validateLogin(userTextField.getText(), Cryptography.cryptSHA256(pwBox.getText()));
 			if (user != null){
-				if (user.getType() == User.ADMIN){
+				if (user.getType().equals(RoleType.ADMINISTRATOR)){
 					new AdminPanel().start(user);
 				} else {
 					new ReceptionistPanel().start(user);

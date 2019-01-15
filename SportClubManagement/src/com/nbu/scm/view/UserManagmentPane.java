@@ -1,8 +1,9 @@
 package com.nbu.scm.view;
 
-import java.util.Set;
-
+import com.nbu.scm.bean.Club;
+import com.nbu.scm.bean.RoleType;
 import com.nbu.scm.bean.User;
+import com.nbu.scm.controller.ClubController;
 import com.nbu.scm.controller.UserController;
 
 import javafx.beans.value.ChangeListener;
@@ -11,16 +12,14 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 
 public class UserManagmentPane extends GridPane {
-
-	private static final String[] ROLES = new String[] { "Administrator", "Receptionist" };
 
 	// Users combo box
 	private Label selectUser = new Label("Select User : ");
@@ -40,30 +39,34 @@ public class UserManagmentPane extends GridPane {
 	private TextField passwField = new TextField();
 	
 	private Label role = new Label("Role : ");
-	private ComboBox<String> roleComboBox = new ComboBox<String>();
+	private ComboBox<RoleType> roleComboBox = new ComboBox<RoleType>();
+	
+	private Label clubLabel = new Label("Club : ");
+	private ComboBox<Club> clubComboBox = new ComboBox<Club>();
+	private TextField clubField = new TextField();
 
 	private Button save = new Button("Save");
 	private Button cancel = new Button("Cancel");
 
 	private User loggedUser;
+	private boolean isSuperAdmin = false;
 	
 	private User user;
 	
-	public UserManagmentPane(User loggedUser) {
+	public UserManagmentPane(User loggedUser) throws Exception {
 		this.loggedUser = loggedUser;
+		this.isSuperAdmin = loggedUser.getId() == 1;
 		init();
 	}
 
-	public void init() {
+	public void init() throws Exception {
 
-		roleComboBox.setItems(FXCollections.observableArrayList(ROLES));
-		try {
-			usersComboBox.setItems(
-					FXCollections.observableArrayList(UserController.getUsersByClubId(loggedUser.getClub().getId())));
-		} catch (Exception e) {
-			Alert alert = new Alert(AlertType.ERROR, e.getMessage());
-			alert.showAndWait();
-			e.printStackTrace();
+		roleComboBox.setItems(FXCollections.observableArrayList(RoleType.values()));
+		
+		if (isSuperAdmin) {
+			usersComboBox.setItems(FXCollections.observableArrayList(UserController.getUsersByClubId(0)));
+		} else {
+			usersComboBox.setItems(FXCollections.observableArrayList(UserController.getUsersByClubId(loggedUser.getClub().getId())));
 		}
 
 		add(selectUser, 0, 1);
@@ -79,11 +82,22 @@ public class UserManagmentPane extends GridPane {
 		add(passwField, 1, 7);
 		add(role, 0, 8);
 		add(roleComboBox, 1, 8);
-		add(save, 0, 9);
-		add(cancel, 1, 9);
+		add(clubLabel, 0, 9);
+		if (isSuperAdmin) {
+			clubComboBox.setItems(
+					FXCollections.observableArrayList(ClubController.getClubs()));
+			add(clubComboBox, 1, 9);
+		} else {
+			clubField.setText(loggedUser.getClub().toString());
+			clubField.setDisable(true);
+			add(clubField, 1, 9);
+		}
+		add(save, 0, 10);
+		add(cancel, 1, 10);
 
 		usersComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<User>() {
 
+			@SuppressWarnings("rawtypes")
 			@Override
 			public void changed(ObservableValue arg, User oldValue, User newValue) {
 				handleComboBoxChange();
@@ -111,41 +125,54 @@ public class UserManagmentPane extends GridPane {
 
 	private void handleComboBoxChange() {
 		user = usersComboBox.getValue();
-		//Fill all fields in the pane from the user object
 		fnameField.setText(user.getFirstName());
 		lnameField.setText(user.getLastName());
 		unameField.setText(user.getUsername());
-//		passwField.setText(user.getPassword());
+		roleComboBox.setValue(user.getType());
+		clubComboBox.setValue(user.getClub());
 	}
 	
 	protected void handleCancelButton(ActionEvent event) {
-		System.out.println("Cancel...");
-		// usersComboBox.setValue(null);
+		usersComboBox.setValue(null);
 		fnameField.setText("");
 		lnameField.setText("");
 		unameField.setText("");
 		passwField.setText("");
-//		roleComboBox.setValue(null);
+		roleComboBox.setValue(null);
+		clubComboBox.setValue(null);
 
 	}
 
 	protected void handleSaveButton(ActionEvent event) {
-		// TODO New instance of User when not selected from Combobox and save
-		// if selected edit the selected instance and update.
-		
 	    if (user == null) {
-	    	// If user is not selected - create new instance
-	    	// user.id is 0 meaning insert
 	    	user = new User();
 	    }
-	    // if user is not null then user id is != 0 meaning update
-		String firstName = fnameField.getText();
-		String lastName = lnameField.getText();
-		String username = unameField.getText();
-		user.setFirstName(firstName);
-		user.setLastName(lastName);
-		user.setUsername(username);
+		user.setUsername(unameField.getText());
+		user.setPassword(passwField.getText());
+		user.setFirstName(fnameField.getText());
+		user.setLastName(lnameField.getText());
+		user.setType(roleComboBox.getValue());
+		if (isSuperAdmin) {
+			user.setClub(clubComboBox.getValue());
+		} else {
+			user.setClub(loggedUser.getClub());
+		}
 
-		System.out.println(user);
+		try {
+			UserController.save(user);
+			usersComboBox.setItems(FXCollections.observableArrayList(UserController.getUsersByClubId(user.getClub().getId())));
+			usersComboBox.setValue(user);
+			fnameField.setText("");
+			lnameField.setText("");
+			unameField.setText("");
+			passwField.setText("");
+			roleComboBox.setValue(null);
+			Alert alert = new Alert(AlertType.INFORMATION, "Success!");
+			alert.showAndWait();
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.ERROR, e.getMessage());
+			alert.showAndWait();
+			e.printStackTrace();
+		}
 	}
 }
