@@ -3,7 +3,7 @@ package com.nbu.scm.bean;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Receipt {
+public class Receipt implements Comparable<Receipt> {
 
 	private int id;
 	private double value;
@@ -12,9 +12,9 @@ public class Receipt {
 	private List<Object> items = new ArrayList<Object>();
 
 	public Receipt() {
-		
+
 	}
-	
+
 	public Receipt(Timestamp timestamp, double value, Club club, List<Object> items) {
 		this(-1, timestamp, value, club, items);
 	}
@@ -66,6 +66,20 @@ public class Receipt {
 
 	public void setItems(List<Object> items) {
 		this.items = items;
+	}
+
+	public void setTimestamp(java.sql.Timestamp timestamp) {
+		this.timestamp = new Timestamp(timestamp);
+	}
+
+	@Override
+	public String toString() {
+		return timestamp + ", " + value;
+	}
+
+	@Override
+	public int compareTo(Receipt o) {
+		return id - o.getId();
 	}
 
 }

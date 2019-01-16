@@ -24,9 +24,13 @@ public class ReceptionistPanel {
 		
 		Tab calendarTab = new Tab("Calendar");
 		CalendarPane calendarGrid = new CalendarPane(user.getClub());
-		
 		calendarTab.setContent(calendarGrid);
 		tabPane.getTabs().add(calendarTab);
+		
+		Tab turnoverTab = new Tab("Turnover");
+		TurnoverPane turnoverPane = new TurnoverPane(user);
+		turnoverTab.setContent(turnoverPane);
+		tabPane.getTabs().add(turnoverTab);
 
 		Tab clubTab = new Tab("Club information");
 		ClubManagmentPane clubGrid = new ClubManagmentPane(user);

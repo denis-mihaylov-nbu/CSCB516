@@ -68,8 +68,8 @@ public class ReceiptPane extends GridPane {
 			}
 		});
 		filter();
-		add(list, 1, rowId);
-		add(receiptList, 3, rowId++);
+		add(list, 1, rowId, 2, 1);
+		add(receiptList, 3, rowId++, 2 , 1);
 
 		list.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
